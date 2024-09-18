@@ -1,9 +1,7 @@
-import os
 
 from langchain_pinecone import PineconeVectorStore
 from langchain_openai import ChatOpenAI
 from langchain_openai import OpenAIEmbeddings
-from langchain import hub
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder, FewShotChatMessagePromptTemplate
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
@@ -26,7 +24,7 @@ def get_session_history(session_id: str) -> BaseChatMessageHistory:
 def get_retriever():
     embedding = OpenAIEmbeddings(model='text-embedding-3-large')
     index_name= 'tax-markdown-index'
-    pinecone_api_key = os.environ.get("PINECONE_API_KEY")
+    # pinecone_api_key = os.environ.get("PINECONE_API_KEY")
     database = PineconeVectorStore.from_existing_index(index_name=index_name, embedding=embedding)
     retriever = database.as_retriever(search_kwargs={'k': 3})
     
@@ -34,7 +32,7 @@ def get_retriever():
 
 
 def get_llm(model='gpt-4o'):
-    llm = ChatOpenAI(model='gpt-4o')
+    llm = ChatOpenAI(model=model)
     return llm
 
 
